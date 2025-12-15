@@ -9,36 +9,71 @@ document.addEventListener('DOMContentLoaded', () => {
         follower.style.transform = `translate3d(${e.clientX - 15}px, ${e.clientY - 15}px, 0)`;
     });
 
-    // Scramble text effect on hover
+    // FIXED Scramble text effect on hover – safe & performant
     const headings = document.querySelectorAll('.scramble-text');
     const chars = '!<>-_\\/[]{}—=+*^?#________';
-   
+
     headings.forEach(heading => {
-        const originalText = heading.innerHTML; // Use innerHTML to preserve <br>
-        heading.addEventListener('mouseover', () => {
-            let iterations = 0;
+        // Split into lines preserving <br>
+        const lines = heading.innerHTML.split('<br>');
+        const originalLines = lines.map(line => line.trim());
+
+        // Render as separate spans for easier manipulation
+        heading.innerHTML = originalLines.map(line => `<span class="line">${line}</span>`).join('<br>');
+
+        const lineSpans = heading.querySelectorAll('.line');
+
+        heading.addEventListener('mouseenter', () => {
+            // Prevent multiple runs if hovering fast
+            if (heading.dataset.scrambled === 'true') return;
+            heading.dataset.scrambled = 'true';
+
+            let charIndex = 0;
+            const totalChars = originalLines.join('').length;
+
             const interval = setInterval(() => {
-                heading.innerHTML = heading.innerHTML.split('')
-                    .map((letter, index) => {
-                        if (letter === '<') return '<'; // Skip HTML tags
-                        if (index < iterations) {
-                            return originalText[index] === ' ' ? '&nbsp;' : originalText[index];
+                let currentPos = 0;
+
+                lineSpans.forEach((span, i) => {
+                    const original = originalLines[i];
+                    let newText = '';
+
+                    for (let j = 0; j < original.length; j++) {
+                        if (currentPos + j < charIndex) {
+                            newText += original[j];
+                        } else {
+                            newText += chars[Math.floor(Math.random() * chars.length)];
                         }
-                        return chars[Math.floor(Math.random() * chars.length)];
-                    })
-                    .join('');
-               
-                if (iterations >= originalText.length) clearInterval(interval);
-                iterations += 1 / 3;
-            }, 30);
+                    }
+
+                    span.textContent = newText;
+                    currentPos += original.length;
+                });
+
+                charIndex += 1;
+
+                if (charIndex > totalChars) {
+                    // Fully revealed – restore original
+                    lineSpans.forEach((span, i) => {
+                        span.textContent = originalLines[i];
+                    });
+                    clearInterval(interval);
+                    heading.dataset.scrambled = 'false';
+                }
+            }, 50); // Smooth & safe speed
+        });
+
+        // Optional: reset on mouseleave if you want it to scramble again next hover
+        heading.addEventListener('mouseleave', () => {
+            heading.dataset.scrambled = 'false';
         });
     });
 
-    // Discord Status (your requested version)
+    // Discord Status
     const statusDot = document.querySelector('.status-dot');
     const statusText = document.querySelector('.status-text');
    
-    const DISCORD_ID = '871420901915234345'; // Your Discord ID (velocity0505)
+    const DISCORD_ID = '871420901915234345';
 
     async function fetchDiscordStatus() {
         try {
@@ -68,15 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     fetchDiscordStatus();
-    setInterval(fetchDiscordStatus, 60000); // Refresh every minute
+    setInterval(fetchDiscordStatus, 60000);
 
-    // Visitor location
+    // FIXED Visitor location – secure HTTPS API
     const locSpan = document.getElementById('visitor-loc');
    
-    fetch('http://ip-api.com/json/')
+    fetch('https://ipapi.co/json/')
         .then(res => res.json())
         .then(data => {
-            locSpan.innerText = data.country || 'Planet Earth';
+            locSpan.innerText = data.country_name || data.country || 'Planet Earth';
         })
         .catch(() => {
             locSpan.innerText = 'Planet Earth';
