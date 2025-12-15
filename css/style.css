@@ -1,0 +1,315 @@
+:root {
+    --bg: #050505;
+    --text: #ffffff;
+    --grad-1: #434343;
+    --grad-2: #000000;
+    --accent-1: #ff0055;
+    --accent-2: #00ddff;
+    --font: 'Space Grotesk', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    overflow-x: hidden;
+}
+
+.cursor {
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: transform 0.1s;
+}
+
+.cursor-follower {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.15s ease-out;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 4rem;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    mix-blend-mode: difference;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -1px;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #555;
+    border-radius: 50%;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4rem;
+    position: relative;
+    background: radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
+}
+
+.hero h1 {
+    font-size: 8vw;
+    line-height: 0.85;
+    font-weight: 700;
+    letter-spacing: -4px;
+    background: linear-gradient(to right, #fff, #999);
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 2rem;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: #666;
+    max-width: 600px;
+}
+
+.loc-highlight {
+    color: var(--accent-2);
+    text-decoration: underline;
+}
+
+.meta-data {
+    display: flex;
+    gap: 4rem;
+    margin-top: 4rem;
+    border-top: 1px solid #222;
+    padding-top: 2rem;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 0.8rem;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.value {
+    font-size: 1.2rem;
+}
+
+.gradient-text {
+    background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.gallery {
+    padding: 4rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.line {
+    height: 1px;
+    background: #333;
+    flex-grow: 1;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 300px;
+    gap: 1rem;
+}
+
+.item {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+}
+
+.item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    opacity: 0.7;
+}
+
+.item:hover img {
+    transform: scale(1.1);
+    opacity: 1;
+    filter: grayscale(0%);
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    background: linear-gradient(to top, black, transparent);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.item:hover .overlay {
+    transform: translateY(0);
+}
+
+.wide { grid-column: span 2; }
+.tall { grid-row: span 2; }
+
+.pricing {
+    padding: 6rem 4rem;
+    background: #080808;
+}
+
+.ticker-wrap {
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 4rem;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    padding: 1rem 0;
+}
+
+.ticker {
+    display: inline-block;
+    animation: ticker 20s linear infinite;
+}
+
+.ticker__item {
+    display: inline-block;
+    padding: 0 2rem;
+    font-size: 2rem;
+    color: #333;
+    font-weight: 700;
+}
+
+@keyframes ticker {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.price-cards {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.p-card {
+    border: 1px solid #222;
+    padding: 3rem;
+    width: 350px;
+    transition: 0.3s;
+}
+
+.p-card:hover {
+    border-color: var(--accent-2);
+    background: #0a0a0a;
+}
+
+.p-card h3 { color: #555; margin-bottom: 1rem; }
+.p-card .price { font-size: 3rem; margin-bottom: 2rem; font-weight: 300; }
+.p-card ul { list-style: none; color: #888; line-height: 1.8; margin-bottom: 2rem; }
+
+.btn {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    font-family: var(--font);
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.btn:hover { background: #fff; color: #000; }
+.fill { background: #fff; color: #000; }
+
+footer {
+    padding: 4rem;
+    border-top: 1px solid #222;
+}
+
+.footer-split {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.contact-info h2 { font-size: 4rem; }
+.email-link { color: #666; text-decoration: none; font-size: 1.5rem; transition: 0.3s; }
+.email-link:hover { color: var(--accent-1); }
+
+.fun-zone { text-align: right; }
+#cat-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #111;
+    border: 1px solid #333;
+    color: #fff;
+    font-family: var(--font);
+}
+
+#cat-container img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: 1rem;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+@media (max-width: 768px) {
+    .hero h1 { font-size: 15vw; }
+    .grid { display: flex; flex-direction: column; }
+    .meta-data { flex-wrap: wrap; gap: 2rem; }
+    .footer-split { flex-direction: column; gap: 3rem; align-items: flex-start; }
+    .price-cards { flex-direction: column; }
+    .cursor, .cursor-follower { display: none; }
+}
